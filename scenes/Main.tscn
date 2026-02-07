@@ -1,0 +1,22 @@
+[gd_scene load_steps=6 format=3 uid="uid://b0mdx71oav51q"]
+
+[ext_resource type="Script" path="res://scripts/Main.gd" id="1_c4s1r"]
+[ext_resource type="PackedScene" path="res://scenes/Unit.tscn" id="2_3f13w"]
+[ext_resource type="PackedScene" path="res://scenes/Building.tscn" id="3_8q4s4"]
+[ext_resource type="PackedScene" path="res://scenes/Resource.tscn" id="4_lw2ab"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_c4s1r")
+unit_scene = ExtResource("2_3f13w")
+building_scene = ExtResource("3_8q4s4")
+resource_scene = ExtResource("4_lw2ab")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HUDLabel" type="Label" parent="CanvasLayer"]
+anchors_preset = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 480.0
+offset_bottom = 120.0
+text = ""

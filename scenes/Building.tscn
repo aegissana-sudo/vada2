@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://c6g58m4pjfj4y"]
+
+[ext_resource type="Script" path="res://scripts/Building.gd" id="1_m3kh8"]
+
+[sub_resource type="RectangleShape2D" id="1_r8pmm"]
+size = Vector2(64, 64)
+
+[node name="Building" type="Area2D"]
+collision_layer = 1
+collision_mask = 1
+script = ExtResource("1_m3kh8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("1_r8pmm")
+
+[node name="Body" type="ColorRect" parent="."]
+position = Vector2(-32, -32)
+size = Vector2(64, 64)
+color = Color(0.6, 0.55, 0.5, 1)
