@@ -83,16 +83,17 @@ func _clear_selection() -> void:
 	selected_building = null
 
 func _pick_entity(screen_position: Vector2) -> Node:
-	var space_state = get_world_2d().direct_space_state
+	var space_state: PhysicsDirectSpaceState2D = get_world_2d().direct_space_state
 	var query := PhysicsPointQueryParameters2D.new()
 	query.position = screen_position
 	query.collide_with_areas = true
 	query.collide_with_bodies = true
 	query.collision_mask = 1
-	var results = space_state.intersect_point(query, 1)
+	var results: Array[Dictionary] = space_state.intersect_point(query, 1)
 	if results.size() == 0:
 		return null
-	return results[0]["collider"]
+	var collider = results[0].get("collider")
+	return collider as Node
 
 func _spawn_unit_from_selected_building() -> void:
 	if selected_building == null:
