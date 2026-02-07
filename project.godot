@@ -1,0 +1,21 @@
+; Engine configuration file.
+; It's best to edit this file in the editor and not by hand.
+
+config_version=5
+
+[application]
+
+config/name="SimpleRTS"
+run/main_scene="res://scenes/Main.tscn"
+config/features=PackedStringArray("4.2", "Forward Plus")
+
+[input]
+
+spawn_unit={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"device": -1,"keycode": 66,"physical_keycode": 0,"key_label": "B","unicode": 66,"location": 0,"pressed": false,"alt_pressed": false,"shift_pressed": false,"ctrl_pressed": false,"meta_pressed": false)]
+}
+
+[rendering]
+
+environment/defaults/default_clear_color=Color(0.08, 0.09, 0.1, 1)
