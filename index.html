@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vada2 — Белые квадраты</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="hud">
+        <div>
+          <h1>Белые квадраты</h1>
+          <p class="subtitle">Уведите игрока от потоков и собирайте энергию.</p>
+        </div>
+        <div class="stats">
+          <div>Счёт: <span id="score">0</span></div>
+          <div>Волна: <span id="wave">1</span></div>
+        </div>
+      </header>
+      <section class="arena">
+        <canvas id="game" width="960" height="540" aria-label="Игровое поле"></canvas>
+        <div class="overlay" id="overlay">
+          <div class="card">
+            <h2 id="title">Готовы?</h2>
+            <p id="message">
+              Используйте WASD или стрелки, чтобы двигаться. Собирайте синие заряды и
+              избегайте белых квадратов.
+            </p>
+            <button id="start">Старт</button>
+          </div>
+        </div>
+      </section>
+      <footer class="tips">
+        <div>Пауза: <strong>Space</strong></div>
+        <div>Сброс: <strong>R</strong></div>
+      </footer>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
