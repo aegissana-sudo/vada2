@@ -5,6 +5,7 @@ var selected := false
 @onready var body_rect: ColorRect = $Body
 
 func _ready() -> void:
+	add_to_group("buildings")
 	_update_visual()
 
 func set_selected(is_selected: bool) -> void:

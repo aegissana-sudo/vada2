@@ -6,6 +6,10 @@ extends Node2D
 
 var selected_units: Array[Node] = []
 var selected_building: Node = null
+var resource_stockpile := 150
+var status_message := ""
+
+const UNIT_COST := 50
 
 @onready var hud_label: Label = $CanvasLayer/HUDLabel
 
@@ -31,6 +35,7 @@ func _input(event: InputEvent) -> void:
 		_spawn_unit_from_selected_building()
 
 func _handle_left_click(click_position: Vector2, additive: bool) -> void:
+	status_message = ""
 	var hit = _pick_entity(click_position)
 	if not additive:
 		_clear_selection()
@@ -48,8 +53,12 @@ func _handle_left_click(click_position: Vector2, additive: bool) -> void:
 	_update_hud()
 
 func _issue_move_command(target_position: Vector2) -> void:
+	var target_resource = _pick_entity(target_position)
 	for unit in selected_units:
-		if unit.has_method("set_target"):
+		if target_resource != null and target_resource.is_in_group("resources"):
+			if unit.has_method("set_resource_target"):
+				unit.set_resource_target(target_resource)
+		elif unit.has_method("set_target"):
 			unit.set_target(target_position)
 
 func _select_unit(unit: Node) -> void:
@@ -87,12 +96,22 @@ func _pick_entity(screen_position: Vector2) -> Node:
 
 func _spawn_unit_from_selected_building() -> void:
 	if selected_building == null:
+		status_message = "Выберите штаб, чтобы нанять юнита."
+		_update_hud()
 		return
 	if unit_scene == null:
+		return
+	if resource_stockpile < UNIT_COST:
+		status_message = "Недостаточно ресурсов для найма."
+		_update_hud()
 		return
 	var unit = unit_scene.instantiate()
 	add_child(unit)
 	unit.global_position = selected_building.global_position + Vector2(48, 0)
+	resource_stockpile -= UNIT_COST
+	_register_unit(unit)
+	status_message = "Нанят новый юнит."
+	_update_hud()
 
 func _spawn_starting_entities() -> void:
 	var building = building_scene.instantiate()
@@ -103,16 +122,28 @@ func _spawn_starting_entities() -> void:
 		var unit = unit_scene.instantiate()
 		add_child(unit)
 		unit.global_position = Vector2(140 + i * 40, 300)
+		_register_unit(unit)
 
 	for i in range(2):
 		var resource = resource_scene.instantiate()
 		add_child(resource)
 		resource.global_position = Vector2(380 + i * 80, 200)
 
+func _register_unit(unit: Node) -> void:
+	if unit.has_signal("resource_collected"):
+		unit.resource_collected.connect(_on_resource_collected)
+
+func _on_resource_collected(amount: int) -> void:
+	resource_stockpile += amount
+	_update_hud()
+
 func _update_hud() -> void:
-	var info = "ЛКМ: выбор, ПКМ: приказ на движение, B: нанять юнита"
+	var info = "ЛКМ: выбор, ПКМ: приказ на движение/сбор, B: нанять юнита (%d)" % UNIT_COST
+	info += "\nРесурсы: %d" % resource_stockpile
 	if selected_units.size() > 0:
 		info += "\nВыбрано юнитов: %d" % selected_units.size()
 	if selected_building != null:
 		info += "\nВыбрано здание: Штаб"
+	if status_message != "":
+		info += "\n" + status_message
 	hud_label.text = info
